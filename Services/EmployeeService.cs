@@ -93,5 +93,21 @@ namespace EmployeeManage.Services
             return true;
         }
 
+        // delete employee by id
+        public async Task<bool> DeleteEmployee(Guid employeeId)
+        {
+            var employee = await appDbContext.Employees
+                .FirstOrDefaultAsync(e => e.EmployeeId == employeeId);
+            if (employee == null)
+            {
+                return false;
+            }
+
+            appDbContext.Employees.Remove(employee);
+            await appDbContext.SaveChangesAsync();
+            return true;
+
+        }
+
     }
 }

@@ -65,5 +65,19 @@ namespace EmployeeManage.Controllers
             }
             return Ok("employee updated");
         }
+
+        [HttpDelete("{employeeId}")]
+
+        public async Task<IActionResult> DeleteEmployeeApi(Guid employeeId)
+        {
+            var deleted = await employeeService.DeleteEmployee(employeeId);
+
+            if (!deleted)
+            {
+                return NotFound("Employee not found");
+            }
+
+            return Ok("Employee deleted");
+        }
     }
 }
