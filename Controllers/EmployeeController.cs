@@ -26,7 +26,7 @@ namespace EmployeeManage.Controllers
 
         }
         // get all employees
-        [HttpGet]
+        [HttpGet("employees")]
         public async Task<IActionResult> GetAllEmployeesApi()
         {
             List<EmployeeDto> employees = await employeeService.GetAllEmployees();
@@ -55,7 +55,7 @@ namespace EmployeeManage.Controllers
 
         //update employee by id
 
-        [HttpPatch("{employeeId}")]
+        [HttpPatch("update/{employeeId}")]
         public async Task<IActionResult> UpdateEmployeeApi(EmployeeDto employeeDto, Guid employeeId)
         {
             var UpdatedEmployee= await employeeService.UpdateEmployee(employeeDto, employeeId);
@@ -66,7 +66,7 @@ namespace EmployeeManage.Controllers
             return Ok("employee updated");
         }
 
-        [HttpDelete("{employeeId}")]
+        [HttpDelete("delete/{employeeId}")]
 
         public async Task<IActionResult> DeleteEmployeeApi(Guid employeeId)
         {
