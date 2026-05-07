@@ -7,10 +7,10 @@ namespace EmployeeManage.Models
         [Key]
         public Guid EmployeeId {  get; set; }
         [Required]
-        public string EmployeeName { get; set; }
+        public string? EmployeeName { get; set; }
         [Required]
         [EmailAddress]
-        public string EmployeeEmail { get; set; }
+        public string? EmployeeEmail { get; set; }
         [Required]
         public DateTime EmployeeDob { get; set; }
         [Required]

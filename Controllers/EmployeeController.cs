@@ -1,6 +1,69 @@
-﻿namespace EmployeeManage.Controllers
+﻿using EmployeeManage.Dtos;
+using EmployeeManage.Models;
+using EmployeeManage.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace EmployeeManage.Controllers
 {
-    public class EmployeeController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class EmployeeController : Controller
     {
+
+        private readonly EmployeeService employeeService;
+        public EmployeeController(EmployeeService employeeService)
+        {
+            this.employeeService = employeeService;
+        }
+
+        //post employee
+        [HttpPost]
+        public async Task<IActionResult> CreateEmployeeApi([FromBody] EmployeeDto employeeDto)
+        {
+            await employeeService.AddEmployee(employeeDto);
+
+            return Ok("employee added successfully");
+
+        }
+        // get all employees
+        [HttpGet]
+        public async Task<IActionResult> GetAllEmployeesApi()
+        {
+            List<EmployeeDto> employees = await employeeService.GetAllEmployees();
+
+            if (employees == null || employees.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(employees);
+        }
+
+        //get employee by id
+
+        [HttpGet("{employeeId}")]
+
+        public async Task<IActionResult> GetEmployeeByIdApi(Guid employeeId)
+        {
+            var employee = await employeeService.GetEmployeeById(employeeId);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            return Ok(employee);
+        }
+
+        //update employee by id
+
+        [HttpPatch("{employeeId}")]
+        public async Task<IActionResult> UpdateEmployeeApi(EmployeeDto employeeDto, Guid employeeId)
+        {
+            var UpdatedEmployee= await employeeService.UpdateEmployee(employeeDto, employeeId);
+            if (UpdatedEmployee == null)
+            {
+                return BadRequest("employee not found");
+            }
+            return Ok("employee updated");
+        }
     }
 }
