@@ -1,4 +1,4 @@
-﻿using EmployeeManage.Models;
+﻿using EmployeeManage.Dtos;
 using EmployeeManage.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ namespace EmployeeManage.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthControllers (IAuthService authservice): ControllerBase
+    public class AuthControllers(IAuthService authservice) : ControllerBase
     {
         [HttpPost("register")]
         public async Task<ActionResult> RegisterAsync(RegisterDto request)
