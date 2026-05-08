@@ -1,4 +1,8 @@
 
+using EmployeeManage.Data;
+using EmployeeManage.Services;
+using Microsoft.EntityFrameworkCore;
+
 namespace EmployeeManage
 {
     public class Program
@@ -10,6 +14,10 @@ namespace EmployeeManage
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddScoped<EmployeeService>();
+            builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase"))
+    );
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
