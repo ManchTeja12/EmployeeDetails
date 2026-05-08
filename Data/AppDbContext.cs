@@ -1,13 +1,13 @@
-﻿using EmployeeManage.Models;
+﻿using EmployeeManage.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeManage.Data
 {
-    public class AppDbContext(DbContextOptions<AppDbContext> options): DbContext(options)
-    {
+  public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+  {
 
-        public DbSet<Employee> Employees { get; set; }
-    }
+    public DbSet<Employee> Employees { get; set; }
+  }
 
-    
+
 }
