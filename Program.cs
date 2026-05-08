@@ -22,7 +22,7 @@ namespace EmployeeManage
                 options.SuppressModelStateInvalidFilter = true;
             });
             builder.Services.AddScoped<IAuthService, AuthServices>();
-            builder.Services.AddDbContext<UserDbContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDbContext<UserDbContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase")));
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {
