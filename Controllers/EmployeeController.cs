@@ -15,26 +15,35 @@ namespace EmployeeManage.Controllers
       this.employeeService = employeeService;
     }
 
-    //post employee
-    [HttpPost]
-    public async Task<IActionResult> CreateEmployeeApi([FromBody] EmployeeDto employeeDto)
-    {
+        //post employee
+        [HttpPost]
+        public async Task<IActionResult> CreateEmployeeApi([FromBody] EmployeeDto employeeDto)
+        {
 
-      try
-      {
-        await employeeService.AddEmployee(employeeDto);
+            try
+            {
+                await employeeService.AddEmployee(employeeDto);
 
-        return Ok("employee added successfully");
-      }
-      catch (Exception ex)
-      {
-        return BadRequest(
-           new
-           {
-             message = ex.Message
-           });
-      }
-    }
+                ApiResponse apiResponse = new ApiResponse
+                {
+                    success = true,
+                    message = "employee created"
+                };
+                return Ok(apiResponse);
+
+
+            }
+            catch (Exception ex)
+
+            {
+                ApiResponse apiResponse = new ApiResponse
+                {
+                    success = false,
+                    message = ex.Message
+                };
+                return BadRequest(apiResponse);
+            }
+        }
     // get all employees
     [HttpGet("employees")]
     public async Task<IActionResult> GetAllEmployeesApi()
