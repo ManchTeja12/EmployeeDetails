@@ -13,7 +13,9 @@ namespace EmployeeManage.Models
         public string? EmployeeEmail { get; set; }
         [Required]
         public DateTime EmployeeDob { get; set; }
-        [Required]
+       
         public decimal EmployeeSalary { get; set; }
     }
+
+
 }

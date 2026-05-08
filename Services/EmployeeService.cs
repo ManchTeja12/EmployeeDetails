@@ -2,6 +2,7 @@
 using EmployeeManage.Dtos;
 using EmployeeManage.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 
 namespace EmployeeManage.Services
 {
@@ -24,13 +25,54 @@ namespace EmployeeManage.Services
                 EmployeeId = Guid.NewGuid(),
                 EmployeeName = dto.EmployeeName,
                 EmployeeEmail = dto.EmployeeEmail,
-                EmployeeDob = dto.EmployeeDob,
+                EmployeeDob = DateTime.SpecifyKind(dto.EmployeeDob, DateTimeKind.Utc),
                 EmployeeSalary = dto.EmployeeSalary
             };
+            bool exist = await this.appDbContext.Employees.AnyAsync(x => x.EmployeeEmail == dto.EmployeeEmail);
+            if (employee.EmployeeEmail == null)
+            {
+                throw new Exception("email required");
+            }
+             if(employee.EmployeeName == null)
+            {
+                throw new Exception("name required");
+            }
+          
+            if (string.IsNullOrWhiteSpace(employee.EmployeeName)) {
+                throw new Exception("username cant be null");
+             }
+            if (exist)
+            {
+                throw new Exception("user already exists");
+            }
+
+            if (!IsValidEmail(employee.EmployeeEmail))
+            {
+                throw new Exception("Invalid email format");
+            }
+            if (employee.EmployeeSalary < 0)
+            {
+                throw new Exception("salary should not be less than 0");
+            }
+
+
 
             appDbContext.Employees.Add(employee);
 
             await appDbContext.SaveChangesAsync();
+        }
+
+        private bool IsValidEmail(string employeeEmail)
+        {
+            try
+            {
+                var mail = new MailAddress(employeeEmail);
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
         }
 
         //get all employees

@@ -20,13 +20,24 @@ namespace EmployeeManage.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEmployeeApi([FromBody] EmployeeDto employeeDto)
         {
-            await employeeService.AddEmployee(employeeDto);
 
-            return Ok("employee added successfully");
+            try
+            {
+                await employeeService.AddEmployee(employeeDto);
 
+                return Ok("employee added successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(
+                   new
+                   {
+                       message = ex.Message
+                   });
+            }
         }
-        // get all employees
-        [HttpGet("employees")]
+            // get all employees
+            [HttpGet("employees")]
         public async Task<IActionResult> GetAllEmployeesApi()
         {
             List<EmployeeDto> employees = await employeeService.GetAllEmployees();
@@ -48,7 +59,7 @@ namespace EmployeeManage.Controllers
             var employee = await employeeService.GetEmployeeById(employeeId);
             if (employee == null)
             {
-                return NotFound();
+                return NotFound("employee not found");
             }
             return Ok(employee);
         }
@@ -61,7 +72,7 @@ namespace EmployeeManage.Controllers
             var UpdatedEmployee= await employeeService.UpdateEmployee(employeeDto, employeeId);
             if (UpdatedEmployee == null)
             {
-                return BadRequest("employee not found");
+                return NotFound("employee not found");
             }
             return Ok("employee updated");
         }
