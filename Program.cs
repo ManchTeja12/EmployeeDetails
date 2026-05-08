@@ -2,9 +2,7 @@
 using EmployeeManage.Data;
 using EmployeeManage.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
 
 namespace EmployeeManage
@@ -22,7 +20,7 @@ namespace EmployeeManage
                 options.SuppressModelStateInvalidFilter = true;
             });
             builder.Services.AddScoped<IAuthService, AuthServices>();
-            builder.Services.AddDbContext<UserDbContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase")));
+            builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase")));
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {
