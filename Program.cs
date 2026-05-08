@@ -4,7 +4,8 @@ using EmployeeManage.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
+  
 using System.Text;
 
 namespace EmployeeManage
@@ -50,7 +51,7 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase"))
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Authentication", Version = "v1" });
 
                 // ✅ this adds the Authorize button
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
@@ -102,4 +103,6 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase"))
       app.Run();
     }
   }
+
+
 }
