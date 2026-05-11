@@ -1,17 +1,16 @@
 ﻿using EmployeeManage.Data;
 using EmployeeManage.Entities;
-using EmployeeManage.Models;
-using EmployeeManage.Services;
-using Microsoft.EntityFrameworkCore;
+using EmployeeManage.Dtos;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;   
+using System.Text;
+using Microsoft.EntityFrameworkCore;
 using BC = BCrypt.Net.BCrypt;
-    
+
 namespace EmployeeManage.Services
 {
-    public class AuthServices(UserDbContext context, IConfiguration configuration) :IAuthService
+    public class AuthServices(UserDbContext context, IConfiguration configuration) : IAuthService
     {
         public async Task Register(RegisterDto user)
         {
@@ -29,7 +28,7 @@ namespace EmployeeManage.Services
             {
                 UserName = user.UserName,
                 UserEmail = user.UserEmail,
-                DOB=user.DOB,
+                DOB = user.DOB,
                 Passwordhash = hashpassword
             };
             context.Add(newuser);
@@ -38,7 +37,7 @@ namespace EmployeeManage.Services
         public async Task<string?> Login(UserDto user)
         {
             var existinguser = await context.users.FirstOrDefaultAsync(u => u.UserEmail == user.UserEmail);
-            if (existinguser==null)
+            if (existinguser == null)
             {
                 throw new KeyNotFoundException("UserNotFound");
             }

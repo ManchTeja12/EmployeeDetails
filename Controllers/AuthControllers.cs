@@ -1,4 +1,4 @@
-﻿using EmployeeManage.Models;
+﻿using EmployeeManage.Dtos;
 using EmployeeManage.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ namespace EmployeeManage.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthControllers (IAuthService authservice): ControllerBase
+    public class AuthControllers(IAuthService authservice) : ControllerBase
     {
         [HttpPost("register")]
         public async Task<ActionResult> RegisterAsync(RegisterDto request)
@@ -24,15 +24,32 @@ namespace EmployeeManage.Controllers
             try
             {
                 await authservice.Register(request);
-                return Ok("User registered successfully");
+                ApiResponse apiResponse = new ApiResponse
+                {
+                    success = true,
+                    message = "User registered successfully",
+                    data = request
+                };
+                return Ok(apiResponse);
             }
             catch (ArgumentException)
             {
-                return BadRequest("Invalid email format");
+                ApiResponse apiResponse = new ApiResponse
+                {
+                    success = false,
+                    message = "Invalid email format"
+                };
+                return BadRequest(apiResponse);
             }
             catch (InvalidOperationException)
             {
-                return Conflict("User already exists");
+                ApiResponse apiResponse = new ApiResponse
+                {
+                    success = false,
+                    message = "User already exists"
+                    
+                };
+                return Conflict(apiResponse);
             }
         }
         [HttpPost("login")]
@@ -50,15 +67,32 @@ namespace EmployeeManage.Controllers
             try
             {
                 var token = await authservice.Login(request);
-                return Ok(token);
+                ApiResponse apiResponse = new ApiResponse
+                {
+                    success = true,
+                    message = "Login successful",
+                    data = token
+                };
+                return Ok(apiResponse);
             }
             catch (KeyNotFoundException)
             {
-                return NotFound("User not found");
+                ApiResponse apiResponse = new ApiResponse
+                {
+                    success = false,
+                    message = "User not found"
+                };
+                return NotFound(apiResponse);
             }
             catch (UnauthorizedAccessException)
             {
-                return Unauthorized("Invalid email or password");
+                ApiResponse apiResponse = new ApiResponse
+                {
+                    success = false,
+                    message = "Invalid email or password"
+                    
+                };
+                return Unauthorized(apiResponse);
             }
         }
 
@@ -67,7 +101,13 @@ namespace EmployeeManage.Controllers
 
         public IActionResult AuthenticatedOnlyEndpoint()
         {
-            return Ok("You are authenticated");
+            ApiResponse apiResponse = new ApiResponse
+            {
+                success = true,
+                message = "You are authenticated"
+               // data = null
+            };
+            return Ok(apiResponse);
         }
     }
 }

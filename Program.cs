@@ -28,7 +28,7 @@ namespace EmployeeManage
                 options.SuppressModelStateInvalidFilter = true;
             });
             builder.Services.AddScoped<IAuthService, AuthServices>();
-            builder.Services.AddDbContext<UserDbContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase")));
+          
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {
@@ -90,13 +90,9 @@ namespace EmployeeManage
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
-
-      app.UseAuthorization();
-
-
-      app.MapControllers();
-
-      app.Run();
+            app.UseAuthorization();
+            app.MapControllers();
+            app.Run();
     }
   }
 

@@ -1,4 +1,4 @@
-﻿using EmployeeManage.Models;
+﻿using EmployeeManage.Dtos;
 
 namespace EmployeeManage.Services
 {
