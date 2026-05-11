@@ -8,7 +8,10 @@ namespace EmployeeManage.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class AuthControllers(IAuthService authservice) : ControllerBase
+
+
     {
+       
         [HttpPost("register")]
         public async Task<ActionResult> RegisterAsync(RegisterDto request)
         {
@@ -66,13 +69,13 @@ namespace EmployeeManage.Controllers
             }
             try
             {
-                var token = await authservice.Login(request);
-                ApiResponse apiResponse = new ApiResponse
-                {
-                    success = true,
-                    message = "Login successful",
-                    data = token
-                };
+                var userResponse = await authservice.Login(request);
+        ApiResponse apiResponse = new ApiResponse
+        {
+          success = true,
+          message = "Login successful",
+          data = userResponse
+        };
                 return Ok(apiResponse);
             }
             catch (KeyNotFoundException)

@@ -4,6 +4,7 @@ namespace EmployeeManage.Dtos
 {
     public class UserDto
     {
+   
         [Required(ErrorMessage = "Email is required")]
         public string? UserEmail { get; set; }
 
