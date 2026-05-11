@@ -4,7 +4,7 @@ using EmployeeManage.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
+
 using Microsoft.OpenApi.Models;
 using System.Text;
 
@@ -20,14 +20,13 @@ namespace EmployeeManage
 
       builder.Services.AddControllers();
       builder.Services.AddScoped<EmployeeService>();
-      builder.Services.AddDbContext<UserDbContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase"))
-);
+      
       // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-      //builder.Services.AddOpenApi();
-      builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
-      {
-          options.SuppressModelStateInvalidFilter = true;
-       });
+     // builder.Services.AddOpenApi();
+            builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
             builder.Services.AddScoped<IAuthService, AuthServices>();
           
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -76,10 +75,11 @@ namespace EmployeeManage
             });
             builder.Services.AddControllers();
             builder.Services.AddScoped<EmployeeService>();
-        
+       
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-  
-            var app = builder.Build();
+           // builder.Services.AddOpenApi();
+
+      var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -95,4 +95,6 @@ namespace EmployeeManage
             app.Run();
     }
   }
+
+
 }
