@@ -1,9 +1,11 @@
 ﻿using EmployeeManage.Dtos;
 using EmployeeManage.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeManage.Controllers
 {
+  [Authorize]
   [ApiController]
   [Route("api/[controller]")]
   public class EmployeeController : Controller
