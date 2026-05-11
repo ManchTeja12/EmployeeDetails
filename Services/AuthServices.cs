@@ -34,21 +34,31 @@ namespace EmployeeManage.Services
             context.Add(newuser);
             await context.SaveChangesAsync();
         }
-        public async Task<string?> Login(UserDto user)
-        {
-            var existinguser = await context.users.FirstOrDefaultAsync(u => u.UserEmail == user.UserEmail);
-            if (existinguser == null)
-            {
-                throw new KeyNotFoundException("UserNotFound");
-            }
-            if (!BC.Verify(user.Password, existinguser.Passwordhash))
-            {
-                throw new UnauthorizedAccessException("InvalidPassword");
-            }
-            return CreateToken(existinguser);
-        }
+    public async Task<UserResponse> Login(UserDto user)
+    {
+      var existinguser = await context.users.FirstOrDefaultAsync(u => u.UserEmail == user.UserEmail);
+      if (existinguser == null)
+      {
+        throw new KeyNotFoundException("UserNotFound");
+      }
+      if (!BC.Verify(user.Password, existinguser.Passwordhash))
+      {
+        throw new UnauthorizedAccessException("InvalidPassword");
+      }
+      var token = CreateToken(existinguser);
 
-        private string CreateToken(User user)
+      var response = new UserResponse
+      {
+        Id=existinguser.Id,
+        UserName = existinguser.UserName,
+        UserEmail = existinguser.UserEmail,
+        DOB = existinguser.DOB,
+        Token = token
+      };
+
+      return response;
+    }
+    private string CreateToken(User user)
         {
             var claims = new List<Claim>
             {
