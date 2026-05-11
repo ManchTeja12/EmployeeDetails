@@ -1,4 +1,5 @@
 
+
 using EmployeeManage.Data;
 using EmployeeManage.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -28,8 +29,10 @@ namespace EmployeeManage
                 options.SuppressModelStateInvalidFilter = true;
             });
             builder.Services.AddScoped<IAuthService, AuthServices>();
-          
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+       builder.Services.AddDbContext<UserDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase")));
+
+
+      builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
                {
                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
