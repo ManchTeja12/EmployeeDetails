@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EmployeeManage.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20260507122015_AddEmployeeAndDob")]
-    partial class AddEmployeeAndDob
+    [Migration("20260511041850_initialmigration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,31 @@ namespace EmployeeManage.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("EmployeeManage.Entities.Employee", b =>
+                {
+                    b.Property<Guid>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("EmployeeDob")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("EmployeeEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmployeeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("EmployeeSalary")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("EmployeeId");
+
+                    b.ToTable("employees");
+                });
+
             modelBuilder.Entity("EmployeeManage.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -34,13 +59,13 @@ namespace EmployeeManage.Migrations
                     b.Property<DateOnly?>("DOB")
                         .HasColumnType("date");
 
-                    b.Property<string>("EmployeeName")
-                        .HasColumnType("text");
-
                     b.Property<string>("Passwordhash")
                         .HasColumnType("text");
 
                     b.Property<string>("UserEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");

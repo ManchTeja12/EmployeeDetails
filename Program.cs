@@ -4,8 +4,8 @@ using EmployeeManage.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
-  
+
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 namespace EmployeeManage
@@ -20,11 +20,9 @@ namespace EmployeeManage
 
       builder.Services.AddControllers();
       builder.Services.AddScoped<EmployeeService>();
-      builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase"))
-);
+      
       // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-      builder.Services.AddOpenApi();
+     // builder.Services.AddOpenApi();
             builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -51,7 +49,7 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase"))
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Authentication", Version = "v1" });
 
                 // ✅ this adds the Authorize button
-                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.OpenApiSecurityScheme
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
@@ -77,11 +75,9 @@ options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase"))
             });
             builder.Services.AddControllers();
             builder.Services.AddScoped<EmployeeService>();
-            builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("UserDatabase"))
-    );
+       
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+           // builder.Services.AddOpenApi();
 
       var app = builder.Build();
 

@@ -9,8 +9,8 @@ namespace EmployeeManage.Services
   public class EmployeeService
   {
 
-    private readonly AppDbContext appDbContext;
-    public EmployeeService(AppDbContext appDbContext)
+    private readonly UserDbContext appDbContext;
+    public EmployeeService(UserDbContext appDbContext)
     {
       this.appDbContext = appDbContext;
     }
@@ -28,7 +28,7 @@ namespace EmployeeManage.Services
         EmployeeDob = DateTime.SpecifyKind(dto.EmployeeDob, DateTimeKind.Utc),
         EmployeeSalary = dto.EmployeeSalary
       };
-      bool exist = await this.appDbContext.Employees.AnyAsync(x => x.EmployeeEmail == dto.EmployeeEmail);
+      bool exist = await this.appDbContext.employees.AnyAsync(x => x.EmployeeEmail == dto.EmployeeEmail);
       if (employee.EmployeeEmail == null)
       {
         throw new Exception("email required");
@@ -58,7 +58,7 @@ namespace EmployeeManage.Services
 
 
 
-      appDbContext.Employees.Add(employee);
+      appDbContext.employees.Add(employee);
 
       await appDbContext.SaveChangesAsync();
     }
@@ -80,7 +80,7 @@ namespace EmployeeManage.Services
 
     public async Task<List<EmployeeDto>> GetAllEmployees()
     {
-      var employees = await appDbContext.Employees
+      var employees = await appDbContext.employees
           .Select(e => new EmployeeDto
           {
             EmployeeId = e.EmployeeId,
@@ -98,7 +98,7 @@ namespace EmployeeManage.Services
 
     public async Task<EmployeeDto> GetEmployeeById(Guid employeeId)
     {
-      var employee = await appDbContext.Employees
+      var employee = await appDbContext.employees
           .Where(e => e.EmployeeId == employeeId)
           .Select(e => new EmployeeDto
           {
@@ -117,7 +117,7 @@ namespace EmployeeManage.Services
 
     public async Task<bool> UpdateEmployee(EmployeeDto employeeDto, Guid employeeId)
     {
-      var employee = await appDbContext.Employees
+      var employee = await appDbContext.employees
           .FirstOrDefaultAsync(e => e.EmployeeId == employeeId);
       if (employee == null)
       {
@@ -141,14 +141,14 @@ namespace EmployeeManage.Services
     // delete employee by id
     public async Task<bool> DeleteEmployee(Guid employeeId)
     {
-      var employee = await appDbContext.Employees
+      var employee = await appDbContext.employees
           .FirstOrDefaultAsync(e => e.EmployeeId == employeeId);
       if (employee == null)
       {
         return false;
       }
 
-      appDbContext.Employees.Remove(employee);
+      appDbContext.employees.Remove(employee);
       await appDbContext.SaveChangesAsync();
       return true;
 
